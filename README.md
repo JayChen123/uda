@@ -1,2 +1,2 @@
 # uda
-Udacity project
+uda project
