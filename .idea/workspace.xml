@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ac7a0ded-5da0-4e92-ad6a-244c753eae6d" name="Default Changelist" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dog-project/dog_app_zh.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dog-project/dog_app_zh.ipynb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dog-project/dog_app_zh.py" />
+    <list default="true" id="ac7a0ded-5da0-4e92-ad6a-244c753eae6d" name="Default Changelist" comment="finished dog project">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -137,7 +134,14 @@
       <option name="project" value="LOCAL" />
       <updated>1550895257687</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="finished dog project">
+      <created>1553309337106</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1553309337106</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -199,7 +203,8 @@
     <MESSAGE value="添加优达项目" />
     <MESSAGE value="Default Changelist" />
     <MESSAGE value="完成第一个项目" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成第一个项目" />
+    <MESSAGE value="finished dog project" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished dog project" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
