@@ -7,7 +7,7 @@
 # ## 获取数据
 # 我们早已为你提供了数据。你将使用原始数据集的子集，它只包括 Moe 酒馆中的场景。数据中并不包括酒馆的其他版本，比如 “Moe 的山洞”、“燃烧的 Moe 酒馆”、“Moe 叔叔的家庭大餐”等等。
 
-# In[24]:
+# In[1]:
 
 
 """
@@ -24,7 +24,7 @@ text = text[81:]
 # ## 探索数据
 # 使用 `view_sentence_range` 来查看数据的不同部分。
 
-# In[25]:
+# In[2]:
 
 
 view_sentence_range = (0, 10)
@@ -66,13 +66,13 @@ print('\n'.join(text.split('\n')[view_sentence_range[0]:view_sentence_range[1]])
 # 请在下面的元组中返回这些字典
 #  `(vocab_to_int, int_to_vocab)`
 
-# In[26]:
+# In[3]:
 
 
 text.split()[:10]
 
 
-# In[41]:
+# In[4]:
 
 
 import numpy as np
@@ -88,13 +88,13 @@ def create_lookup_tables(text):
     :return: A tuple of dicts (vocab_to_int, int_to_vocab)
     """
     # TODO: Implement Function
-#     text_set = set(text)
-#     int_to_vocab = {k:v.lower() for k,v in zip(range(1,len(text_set)+1), text_set)}
-#     vocab_to_int = {v.lower():k for k,v in zip(range(1,len(text_set)+1), text_set)}
-    counts = Counter(text)
-    vocab = sorted(counts, key=counts.get, reverse=True)
-    vocab_to_int = {word: ii for ii, word in enumerate(vocab)}
-    int_to_vocab = dict(zip(vocab_to_int.values(), vocab_to_int.keys()))
+    text_set = set(text)
+    int_to_vocab = {k:v for k,v in enumerate(text_set)}
+    vocab_to_int = {v:k for k,v in enumerate(text_set)}
+#     counts = Counter(text)
+#     vocab = sorted(counts, key=counts.get, reverse=True)
+#     vocab_to_int = {word: ii for ii, word in enumerate(vocab)}
+#     int_to_vocab = dict(zip(vocab_to_int.values(), vocab_to_int.keys()))
     return vocab_to_int, int_to_vocab
 
 
@@ -122,7 +122,7 @@ tests.test_create_lookup_tables(create_lookup_tables)
 # 
 # 这个字典将用于标记符号并在其周围添加分隔符（空格）。这能将符号视作单独词汇分割开来，并使神经网络更轻松地预测下一个词汇。请确保你并没有使用容易与词汇混淆的标记。与其使用 “dash” 这样的标记，试试使用“||dash||”。
 
-# In[42]:
+# In[5]:
 
 
 def token_lookup():
@@ -154,7 +154,7 @@ tests.test_tokenize(token_lookup)
 # ## 预处理并保存所有数据
 # 运行以下代码将预处理所有数据，并将它们保存至文件。
 
-# In[43]:
+# In[6]:
 
 
 """
@@ -187,7 +187,7 @@ helper.preprocess_and_save_data(data_dir, token_lookup, create_lookup_tables)
 # # 检查点
 # 这是你遇到的第一个检点。如果你想要回到这个 notebook，或需要重新打开 notebook，你都可以从这里开始。预处理的数据都已经保存完毕。
 
-# In[44]:
+# In[7]:
 
 
 """
@@ -212,7 +212,7 @@ int_text, vocab_to_int, int_to_vocab, token_dict = helper.load_preprocess()
 # 
 # ### 检查 TensorFlow 版本并访问 GPU
 
-# In[45]:
+# In[8]:
 
 
 """
@@ -243,7 +243,7 @@ else:
 # 
 # 返回下列元组中的占位符 `(Input, Targets, LearningRate)`
 
-# In[46]:
+# In[9]:
 
 
 def get_inputs():
@@ -276,7 +276,7 @@ tests.test_get_inputs(get_inputs)
 # 
 # 返回 cell 和下列元组中的初始状态 `(Cell, InitialState)`
 
-# In[47]:
+# In[10]:
 
 
 def get_init_cell(batch_size, rnn_size):
@@ -304,7 +304,7 @@ tests.test_get_init_cell(get_init_cell)
 # 使用 TensorFlow 将嵌入运用到 `input_data` 中。
 # 返回嵌入序列。
 
-# In[48]:
+# In[11]:
 
 
 def get_embed(input_data, vocab_size, embed_dim):
@@ -336,7 +336,7 @@ tests.test_get_embed(get_embed)
 # 
 # 返回下列元组中的输出和最终状态`(Outputs, FinalState)`
 
-# In[49]:
+# In[12]:
 
 
 def build_rnn(cell, inputs):
@@ -367,7 +367,7 @@ tests.test_build_rnn(build_rnn)
 # 
 # 返回下列元组中的 logit 和最终状态 `Logits, FinalState`
 
-# In[50]:
+# In[13]:
 
 
 def build_nn(cell, rnn_size, input_data, vocab_size, embed_dim):
@@ -424,7 +424,7 @@ tests.test_build_nn(build_nn)
 # ]
 # ```
 
-# In[51]:
+# In[14]:
 
 
 def get_batches(int_text, batch_size, seq_length):
@@ -476,13 +476,13 @@ tests.test_get_batches(get_batches)
 # - 将 `learning_rate` 设置为学习率。
 # - 将 `show_every_n_batches` 设置为神经网络应输出的程序组数量。
 
-# In[52]:
+# In[ ]:
 
 
 # Number of Epochs
-num_epochs = 50
+num_epochs = 200
 # Batch Size
-batch_size = 64
+batch_size = 128
 # RNN Size
 rnn_size = 128
 # Embedding Dimension Size
@@ -490,7 +490,7 @@ embed_dim = 200
 # Sequence Length
 seq_length = 30
 # Learning Rate
-learning_rate = 0.01
+learning_rate = 0.005
 # Show stats for every n number of batches
 show_every_n_batches = 20
 
@@ -503,7 +503,7 @@ save_dir = './save'
 # ### 创建图表
 # 使用你实现的神经网络创建图表。
 
-# In[53]:
+# In[21]:
 
 
 """
@@ -540,7 +540,7 @@ with train_graph.as_default():
 # ## 训练
 # 在预处理数据中训练神经网络。如果你遇到困难，请查看这个[表格](https://discussions.udacity.com/)，看看是否有人遇到了和你一样的问题。
 
-# In[54]:
+# In[22]:
 
 
 """
@@ -579,7 +579,7 @@ with tf.Session(graph=train_graph) as sess:
 # ## 储存参数
 # 储存 `seq_length` 和 `save_dir` 来生成新的电视剧剧本。
 
-# In[55]:
+# In[23]:
 
 
 """
@@ -591,7 +591,7 @@ helper.save_params((seq_length, save_dir))
 
 # # 检查点
 
-# In[56]:
+# In[24]:
 
 
 """
@@ -617,7 +617,7 @@ seq_length, load_dir = helper.load_params()
 # 
 # 返回下列元组中的 tensor `(InputTensor, InitialStateTensor, FinalStateTensor, ProbsTensor)`
 
-# In[57]:
+# In[25]:
 
 
 def get_tensors(loaded_graph):
@@ -643,7 +643,7 @@ tests.test_get_tensors(get_tensors)
 # ### 选择词汇
 # 实现 `pick_word()` 函数来使用 `probabilities` 选择下一个词汇。
 
-# In[58]:
+# In[26]:
 
 
 def pick_word(probabilities, int_to_vocab):
@@ -667,7 +667,7 @@ tests.test_pick_word(pick_word)
 # ## 生成电视剧剧本
 # 这将为你生成一个电视剧剧本。通过设置 `gen_length` 来调整你想生成的剧本长度。
 
-# In[59]:
+# In[27]:
 
 
 gen_length = 200
