@@ -18,7 +18,7 @@
 data_dir = '/data'
 get_ipython().system('pip install matplotlib==2.0.2')
 # FloydHub - Use with data ID "R5KrjnANiKVhLWAkpXhNBe"
-#data_dir = '/input'
+# data_dir = '/input'
 
 
 """
@@ -147,7 +147,7 @@ tests.test_model_inputs(model_inputs)
 # 
 # 该函数应返回形如 (tensor output of the discriminator, tensor logits of the discriminator) 的元组。
 
-# In[6]:
+# In[96]:
 
 
 def discriminator(images, reuse=False):
@@ -161,7 +161,7 @@ def discriminator(images, reuse=False):
     with tf.variable_scope('discriminator', reuse=reuse):
         alpha = 0.2
         # input shape 28*28*3
-        conv1 = tf.layers.conv2d(images, filters=64, kernel_size=3, strides=2, padding='same')
+        conv1 = tf.layers.conv2d(images, filters=64, kernel_size=5, strides=2, padding='same')
         act1 = tf.maximum(conv1 * alpha, conv1)
         drop1 = tf.nn.dropout(act1, keep_prob=0.5)
         bn1 = tf.layers.batch_normalization(drop1)
@@ -191,7 +191,7 @@ tests.test_discriminator(discriminator, tf)
 # 
 # 该函数应返回所生成的 28 x 28 x `out_channel_dim` 维度图像。
 
-# In[7]:
+# In[113]:
 
 
 def generator(z, out_channel_dim, is_train=True):
@@ -205,6 +205,41 @@ def generator(z, out_channel_dim, is_train=True):
     # TODO: Implement Function
     alpha = 0.2
     with tf.variable_scope("generator", reuse=not is_train):
+#         g1 = tf.layers.dense(z, 4*4*512)
+#         g1 = tf.reshape(g1, shape=(-1, 4, 4, 512))
+#         bn1 = tf.layers.batch_normalization(g1)
+#         ack1 = tf.maximum(alpha * bn1, bn1)
+# #         print(ack1.shape)
+        
+# #         output 8*8*1024
+#         g2 = tf.layers.conv2d_transpose(ack1, filters=256, kernel_size=3, strides=2, padding='same')
+#         bn2 = tf.layers.batch_normalization(g2)
+#         ack2 = tf.maximum(alpha * bn2, bn2)
+# #         print(ack2.shape)
+        
+# #         output 8*8*256
+#         g3 = tf.layers.conv2d_transpose(ack2, filters=128, kernel_size=3, strides=1, padding='valid')
+#         bn3 = tf.layers.batch_normalization(g3)
+#         ack3 = tf.maximum(alpha * bn3, bn3)
+# #         print(ack3.shape)
+        
+#         g3 = tf.layers.conv2d_transpose(ack3, filters=128, kernel_size=3, strides=1, padding='valid')
+#         bn3 = tf.layers.batch_normalization(g3)
+#         ack3 = tf.maximum(alpha * bn3, bn3)
+# #         print(ack3.shape)
+        
+# #         output 7*7*256
+#         g4 = tf.layers.conv2d_transpose(ack3, filters=64, kernel_size=3, strides=1, padding='valid')
+#         bn4 = tf.layers.batch_normalization(g4)
+#         ack4 = tf.maximum(alpha * bn4, bn4)
+# #         print(ack4.shape)
+        
+# #         output 14*14*128
+#         g5 = tf.layers.conv2d_transpose(ack4, filters=out_channel_dim, kernel_size=3, strides=2, padding='same')
+# #         g5 = tf.image.resize_images(g5, size=(28, 28))
+#         out = tf.tanh(g5)
+# #         print(out.shape)
+
         g1 = tf.layers.dense(z, 4*4*512)
         g1 = tf.reshape(g1, shape=(-1, 4, 4, 512))
         bn1 = tf.layers.batch_normalization(g1)
@@ -213,17 +248,22 @@ def generator(z, out_channel_dim, is_train=True):
         g2 = tf.layers.conv2d_transpose(ack1, filters=256, kernel_size=3, strides=2, padding='same')
         bn2 = tf.layers.batch_normalization(g2)
         ack2 = tf.maximum(alpha * bn2, bn2)
-        
+
         # output 8*8*256
         g3 = tf.layers.conv2d_transpose(ack2, filters=128, kernel_size=3, strides=2, padding='same')
         bn3 = tf.layers.batch_normalization(g3)
         ack3 = tf.maximum(alpha * bn3, bn3)
+#         print(ack3.shape)
+        
+#         g4 = tf.layers.conv2d_transpose(ack3, filters=64, kernel_size=3, strides=2, padding='same')
+#         bn4 = tf.layers.batch_normalization(g4)
+#         ack4 = tf.maximum(alpha * bn4, bn4)
+#         print(ack4.shape)
         
         #output 16*16*128
-        g4 = tf.layers.conv2d_transpose(ack3, filters=out_channel_dim, kernel_size=5, strides=2, padding='same')
+        g4 = tf.layers.conv2d_transpose(ack3, filters=out_channel_dim, kernel_size=3, strides=2, padding='same')
         g4 = tf.image.resize_images(g4, size=(28, 28))
         out = tf.tanh(g4)
-    
     return out
 
 
@@ -240,7 +280,7 @@ tests.test_generator(generator, tf)
 # - `discriminator(images, reuse=False)`
 # - `generator(z, out_channel_dim, is_train=True)`
 
-# In[8]:
+# In[114]:
 
 
 def model_loss(input_real, input_z, out_channel_dim):
@@ -282,7 +322,7 @@ tests.test_model_loss(model_loss)
 # ### 优化（Optimization）
 # 部署 `model_opt` 函数实现对 GANs 的优化。使用 [`tf.trainable_variables`](https://www.tensorflow.org/api_docs/python/tf/trainable_variables) 获取可训练的所有变量。通过变量空间名 `discriminator` 和 `generator` 来过滤变量。该函数应返回形如 (discriminator training operation, generator training operation) 的元组。
 
-# In[9]:
+# In[115]:
 
 
 def model_opt(d_loss, g_loss, learning_rate, beta1):
@@ -306,7 +346,7 @@ def model_opt(d_loss, g_loss, learning_rate, beta1):
         g_train_opt = tf.train.AdamOptimizer(learning_rate, beta1=beta1).minimize(g_loss, var_list=g_vars)
         d_train_opt = tf.train.AdamOptimizer(learning_rate, beta1=beta1).minimize(d_loss, var_list=d_vars)
     
-    return (d_train_opt, g_train_opt)
+    return d_train_opt, g_train_opt
 
 """
 DON'T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE
@@ -318,7 +358,7 @@ tests.test_model_opt(model_opt, tf)
 # ### 输出显示
 # 使用该函数可以显示生成器 (Generator) 在训练过程中的当前输出，这会帮你评估 GANs 模型的训练程度。
 
-# In[10]:
+# In[116]:
 
 
 """
@@ -358,7 +398,7 @@ def show_generator_output(sess, n_images, input_z, out_channel_dim, image_mode):
 # 
 # **注意**：在每个批次 (batch) 中运行 `show_generator_output` 函数会显著增加训练时间与该 notebook 的体积。推荐每 100 批次输出一次 `generator` 的输出。 
 
-# In[11]:
+# In[117]:
 
 
 def train(epoch_count, batch_size, z_dim, learning_rate, beta1, get_batches, data_shape, data_image_mode):
@@ -419,13 +459,13 @@ def train(epoch_count, batch_size, z_dim, learning_rate, beta1, get_batches, dat
 # ### MNIST
 # 在 MNIST 上测试你的 GANs 模型。经过 2 次迭代，GANs 应该能够生成类似手写数字的图像。确保生成器 (generator) 低于辨别器 (discriminator) 的损失，或接近 0。
 
-# In[12]:
+# In[118]:
 
 
 batch_size = 64
-z_dim = 20
+z_dim = 120
 learning_rate = 0.001
-beta1 = 0.3
+beta1 = 0.5
 
 
 """
@@ -442,12 +482,12 @@ with tf.Graph().as_default():
 # ### CelebA
 # 在 CelebA 上运行你的 GANs 模型。在一般的GPU上运行每次迭代大约需要 20 分钟。你可以运行整个迭代，或者当 GANs 开始产生真实人脸图像时停止它。
 
-# In[14]:
+# In[119]:
 
 
 batch_size = 64
-z_dim = 200
-learning_rate = 0.002
+z_dim = 120
+learning_rate = 0.0002
 beta1 = 0.5
 
 
