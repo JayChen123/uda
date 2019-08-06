@@ -7,7 +7,7 @@ class Actor:
     Actor (Policy) Model.行动者（策略）模型,将状态映射到动作
     """
 
-    def __init__(self, state_size, action_size, action_low, action_high, learning_rate=0.001):
+    def __init__(self, state_size, action_size, action_low, action_high, learning_rate=0.0001):
         """Initialize parameters and build model.
 
         Params

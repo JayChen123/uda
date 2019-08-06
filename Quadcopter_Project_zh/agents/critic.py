@@ -14,6 +14,7 @@ class Critic:
         ======
             state_size (int): Dimension of each state
             action_size (int): Dimension of each action
+            learning_rate 0.01, 0.001,0.0001, 00005
         """
         self.state_size = state_size
         self.action_size = action_size
@@ -30,21 +31,21 @@ class Critic:
         states = layers.Input(shape=(self.state_size,), name='states')
         actions = layers.Input(shape=(self.action_size,), name='actions')
         # 对状态进行规范化
-        states_normal = layers.BatchNormalization()(states)
+#         states_normal = layers.BatchNormalization()(states)
         # 对动作进行规范化
-        actions_normal = layers.BatchNormalization()(actions)
+#         actions_normal = layers.BatchNormalization()(actions)
 
         # Add hidden layer(s) for state pathway
-        net_states = layers.Dense(units=32, activation='relu')(states_normal)
-        net_states = layers.Dropout(0.1)(net_states)
-        net_states = layers.Dense(units=64, activation='relu')(net_states)
-        net_states = layers.Dropout(0.1)(net_states)
+        net_states = layers.Dense(units=128, activation='relu')(states)
+#         net_states = layers.Dropout(0.2)(net_states)
+        net_states = layers.Dense(units=256, activation='relu')(net_states)
+#         net_states = layers.Dropout(0.2)(net_states)
 
         # Add hidden layer(s) for action pathway
-        net_actions = layers.Dense(units=32, activation='relu')(actions_normal)
-        net_actions = layers.Dropout(0.1)(net_actions)
-        net_actions = layers.Dense(units=64, activation='relu')(net_actions)
-        net_actions = layers.Dropout(0.1)(net_actions)
+        net_actions = layers.Dense(units=128, activation='relu')(actions)
+#         net_actions = layers.Dropout(0.2)(net_actions)
+        net_actions = layers.Dense(units=256, activation='relu')(net_actions)
+#         net_actions = layers.Dropout(0.2)(net_actions)
 
         # Try different layer sizes, activations, add batch normalization, regularizers, etc.
 
